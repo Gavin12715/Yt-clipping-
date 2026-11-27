@@ -34,6 +34,10 @@ def download(url, out_dir="downloads", start=None, end=None, max_height=1080,
         # Netscape cookies.txt from a logged-in YouTube account; avoids the
         # "Sign in to confirm you're not a bot" block on cloud servers.
         opts["cookiefile"] = str(cookies)
+    elif os.environ.get("YTDLP_BROWSER"):
+        # Running on your own computer: reuse the YouTube login in that browser
+        # (chrome, firefox, edge, safari, brave). Only needed if YouTube blocks you.
+        opts["cookiesfrombrowser"] = (os.environ["YTDLP_BROWSER"].strip().lower(),)
     if start is not None or end is not None:
         s = parse_duration(start) if start else 0
         e = parse_duration(end) if end else float("inf")

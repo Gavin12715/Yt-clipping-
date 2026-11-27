@@ -80,7 +80,7 @@ def run(url, out_dir="clips", max_clips=5, min_dur=15, max_dur=60,
 
 def main():
     p = argparse.ArgumentParser(description="Turn a YouTube video into Shorts.")
-    p.add_argument("url")
+    p.add_argument("url", nargs="?", help="YouTube link or video file (asked if left out)")
     p.add_argument("--max-clips", type=int, default=5)
     p.add_argument("--min", type=int, default=15, help="min clip seconds")
     p.add_argument("--max", type=int, default=60, help="max clip seconds")
@@ -91,7 +91,15 @@ def main():
     p.add_argument("--privacy", default="public", choices=["public", "unlisted", "private"])
     p.add_argument("--every", type=int, default=180, help="minutes between scheduled posts")
     p.add_argument("--out", default="clips")
+    p.add_argument("--browser", help="use YouTube login from this browser, e.g. chrome, firefox")
     a = p.parse_args()
+    _load_dotenv()
+    if a.browser:
+        os.environ["YTDLP_BROWSER"] = a.browser
+    if not a.url:
+        a.url = input("Paste a YouTube link (or drag a video file here): ").strip().strip('"\'')
+        mode = input("Send clips to Postiz? [n]o / [d]raft / [s]chedule: ").strip().lower()[:1]
+        a.post = {"d": "draft", "s": "schedule"}.get(mode)
     run(a.url, a.out, a.max_clips, a.min, a.max, a.whisper, a.post, a.privacy,
         a.every, a.start, a.end)
 

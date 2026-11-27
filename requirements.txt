@@ -1,4 +1,4 @@
 yt-dlp>=2026.11.23
 requests
 clipsai
-whisperx @ git+https://github.com/m-bain/whisperx.git
+whisperx
