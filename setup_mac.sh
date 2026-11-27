@@ -32,7 +32,7 @@ echo "Installing Python packages from $REQ (this takes a while)..."
 rm -rf .venv
 "$PY" -m venv .venv
 .venv/bin/pip install --upgrade pip
-.venv/bin/pip install -r "$REQ"
+.venv/bin/pip install --prefer-binary -r "$REQ"
 
 # 4. ffmpeg: bundled copy via static-ffmpeg (downloads once)
 .venv/bin/python -c "import static_ffmpeg; static_ffmpeg.add_paths(); print('ffmpeg ready')"
