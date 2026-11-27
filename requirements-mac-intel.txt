@@ -1,0 +1,12 @@
+# Intel Macs: PyTorch stopped shipping Intel-Mac builds after 2.2.2,
+# so pin the AI stack to versions that still work with it. Python 3.12.
+yt-dlp>=2026.11.23
+requests
+clipsai
+static-ffmpeg
+whisperx==3.3.1
+torch==2.2.2
+torchaudio==2.2.2
+numpy<2
+transformers<4.50
+sentence-transformers<4

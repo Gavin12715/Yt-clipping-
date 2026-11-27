@@ -31,6 +31,7 @@ Running on your own computer avoids YouTube's "confirm you're not a bot" block t
 4. *(Optional)* Open `.env` in a text editor to add your Postiz key, or set `YTDLP_BROWSER=chrome`
    (Windows: `firefox`) if YouTube still asks you to sign in.
 
+Older Intel Macs are supported (`setup_mac.sh` picks `requirements-mac-intel.txt` automatically) but are slow.
 Without a graphics card, transcription runs on the CPU: roughly real-time with the default model,
 so an hour-long video takes about an hour. Use `--start`/`--end` to only process part of it.
 
