@@ -36,7 +36,11 @@ def run(url, out_dir="clips", max_clips=5, min_dur=15, max_dur=60,
         whisper_model=None, post=None, privacy="public", every_minutes=180,
         start=None, end=None):
     _load_dotenv()
-    info = download(url, "downloads", start, end)
+    if Path(url).is_file():  # local video file instead of a link
+        stem = Path(url).stem
+        info = {"filepath": url, "title": stem, "id": re.sub(r"\W+", "_", stem)}
+    else:
+        info = download(url, "downloads", start, end)
     src, title = info["filepath"], info.get("title", "")
     print(f"Downloaded: {title}")
 
@@ -59,10 +63,11 @@ def run(url, out_dir="clips", max_clips=5, min_dur=15, max_dur=60,
         pz = Postiz()
         channel = pz.youtube_channel_id()
         when = dt.datetime.now(dt.timezone.utc) + dt.timedelta(minutes=10)
-        credit = f"Source: {info.get('webpage_url', url)}"
+        src_url = info.get("webpage_url")
+        credit = f"Source: {src_url}" if src_url else ""
         for r in results:
             res = pz.post_youtube_short(
-                r["file"], r["title"], f"{r['text'][:4000]}\n\n{credit}",
+                r["file"], r["title"], f"{r['text'][:4000]}\n\n{credit}".strip(),
                 tags=["shorts"], when=when, privacy=privacy,
                 channel_id=channel, mode=post)
             r["postiz"] = res
